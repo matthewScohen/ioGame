@@ -9,7 +9,7 @@ app.get('/',function(req, res) {
 });
 app.use('/client',express.static(__dirname + '/client'));
 
-serv.listen(2019);
+serv.listen(9000);
 
 setInterval(tickServer, 1000/60);
 
