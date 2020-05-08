@@ -1,78 +1,60 @@
 var express = require('express');
 var app = express();
 var serv = require('http').Server(app);
-var Player = require("./server/player.js");
-var Bead = require("./server/bead.js")
+var Game = require("./server/game.js");
 
+const PORT = 9000;
+const serverUpdateRate = 60;
+
+//Setup files to be served to client
 app.get('/',function(req, res) {
     res.sendFile(__dirname + '/client/index.html');
 });
 app.use('/client',express.static(__dirname + '/client'));
 
-serv.listen(9000);
-
-setInterval(tickServer, 1000/60);
-
+//Setup server
+serv.listen(PORT);
+setInterval(tickServer, 1000/serverUpdateRate);
+var io = require('socket.io')(serv,{});
 console.log("Server started");
 
-var SOCKET_LIST = {};
-var PLAYER_LIST = {};
-
-var io = require('socket.io')(serv,{});
+//Setup game
+var game = new Game();
 
 io.sockets.on('connection', function(socket){
     socket.id = Math.random();
-    console.log("User connected:" + socket.id);
-    SOCKET_LIST[socket.id] = socket;
-
-    player = new Player(socket.id, 350, 350);
-    PLAYER_LIST[socket.id] = player;
+    game.addPlayer(socket);
 
     socket.on('disconnect',function(){
-        delete SOCKET_LIST[socket.id];
-        delete PLAYER_LIST[socket.id];
-        console.log("User disconnected:" + socket.id);
+        game.removePlayer(socket);
     });
-
-    socket.on('keyPress',function(data){
-        if(data.inputId == 'left')
-            PLAYER_LIST[socket.id].pressingLeft = data.state;
-        else if(data.inputId == 'right')
-            PLAYER_LIST[socket.id].pressingRight = data.state;
-        else if(data.inputId == 'up')
-            PLAYER_LIST[socket.id].pressingUp = data.state;
-        else if(data.inputId == 'down')
-            PLAYER_LIST[socket.id].pressingDown = data.state;
+    socket.on('keyPress',function(inputData){
+      game.handleInput(socket, inputData);
     });
-
-
 });
-
-
-var bead = new Bead(Math.floor(Math.random() * 690 + 10), Math.floor(Math.random() * 690 + 10));
 
 function tickServer() {
   var playerInfoPack = [];
   var beadPosition = [];
-  for(var i in PLAYER_LIST){
-      var player = PLAYER_LIST[i];
-      player.tick();
-      playerInfoPack.push({
-          playerX:player.xPos,
-          playerY:player.yPos,
-          playerColor:player.color,
-          playerScore:player.score
-      });
-      if(bead.checkPlayerBeadCollision(player.xPos, player.yPos, 20)) {
-        player.score++;
-        bead.xPos = Math.floor(Math.random() * 690 + 10);
-        bead.yPos = Math.floor(Math.random() * 690 + 10);
-      }
+  //Update game
+  game.tick();
+  //Add all the player data to the player info pack
+  for(var i in game.players)
+  {
+      playerInfoPack.push(
+        {
+          playerX:game.players[i].xPos,
+          playerY:game.players[i].yPos,
+          playerColor:game.players[i].color,
+          playerScore:game.players[i].score
+        });
   }
-  beadPosition.push(bead.xPos, bead.yPos);
-  for(var i in SOCKET_LIST){
-      var socket = SOCKET_LIST[i];
-      socket.emit('playerInfo', playerInfoPack);
-      socket.emit('beadPosition', beadPosition);
+  //Add the bead data to the bead info pack
+  beadPosition.push(game.bead.xPos, game.bead.yPos);
+  //Send the player and bead info to all connected userss
+  for(var i in game.sockets)
+  {
+      game.sockets[i].emit('playerInfo', playerInfoPack);
+      game.sockets[i].emit('beadPosition', beadPosition);
   }
 }
