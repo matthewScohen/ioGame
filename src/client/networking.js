@@ -2,11 +2,21 @@ var socket = io();
 
 socket.on('playerInfo', function(newPlayers){
   players = newPlayers;
-  renderGameBoard(players, beadX, beadY);
+  console.log(newPlayers);
 });
 
 socket.on('beadPosition', function(newBeadData) {
   beadX = newBeadData[0];
   beadY = newBeadData[1];
-  renderGameBoard(players, beadX, beadY);
+});
+
+socket.on("cameraInfo", function(cameraData)
+{
+  cameraX = cameraData[0];
+  cameraY = cameraData[1];
+});
+
+socket.on("wallInfo", function(wallsData)
+{
+  walls = wallsData;
 });

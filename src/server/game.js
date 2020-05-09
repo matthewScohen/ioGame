@@ -1,13 +1,15 @@
 var Player = require("./player.js");
 var Bead = require("./bead.js");
+var Map = require("./map.js");
 
 class Game
 {
   constructor()
   {
-    this.sockets = {};
-    this.players = {};
+    this.sockets = [];
+    this.players = [];
     this.bead = new Bead(Math.floor(Math.random() * 690 + 10), Math.floor(Math.random() * 690 + 10));
+    this.map = new Map();
   }
 
   addPlayer(socket)
@@ -44,7 +46,7 @@ class Game
       //Update the players position
       this.players[i].tick();
       //Check if the player is colliding with the bead
-      if(this.bead.checkPlayerBeadCollision(this.players[i].xPos, this.players[i].yPos, 20)) {
+      if(this.bead.checkPlayerBeadCollision(this.players[i].xPos, this.players[i].yPos, this.players[i].radius)) {
         this.players[i].score++;
         this.bead.xPos = Math.floor(Math.random() * 690 + 10);
         this.bead.yPos = Math.floor(Math.random() * 690 + 10);

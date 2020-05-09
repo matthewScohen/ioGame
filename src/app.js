@@ -23,6 +23,7 @@ var game = new Game();
 
 io.sockets.on('connection', function(socket){
     socket.id = Math.random();
+    socket.emit("wallInfo", game.map.walls);
     game.addPlayer(socket);
 
     socket.on('disconnect',function(){
@@ -38,20 +39,21 @@ function tickServer() {
   var beadPosition = [];
   //Update game
   game.tick();
+  //Add the bead data to the bead info pack
+  beadPosition.push(game.bead.xPos, game.bead.yPos);
   //Add all the player data to the player info pack
   for(var i in game.players)
   {
       playerInfoPack.push(
         {
-          playerX:game.players[i].xPos,
-          playerY:game.players[i].yPos,
-          playerColor:game.players[i].color,
-          playerScore:game.players[i].score
+          xPos:game.players[i].xPos,
+          yPos:game.players[i].yPos,
+          color:game.players[i].color,
+          score:game.players[i].score,
+          radius:game.players[i].radius
         });
   }
-  //Add the bead data to the bead info pack
-  beadPosition.push(game.bead.xPos, game.bead.yPos);
-  //Send the player and bead info to all connected userss
+  //Send the player and bead info to all connected users
   for(var i in game.sockets)
   {
       game.sockets[i].emit('playerInfo', playerInfoPack);
