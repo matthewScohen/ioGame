@@ -23,6 +23,7 @@ var game = new Game();
 
 io.sockets.on('connection', function(socket){
     socket.id = Math.random();
+    socket.emit("selfId", socket.id);
     socket.emit("wallInfo", game.map.walls);
     game.addPlayer(socket);
 
@@ -54,7 +55,8 @@ function tickServer() {
           yPos:game.players[i].yPos,
           color:game.players[i].color,
           score:game.players[i].score,
-          radius:game.players[i].radius
+          radius:game.players[i].radius,
+          id:game.players[i].id
         });
   }
   //Add all the camera data to a list

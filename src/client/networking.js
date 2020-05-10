@@ -19,3 +19,8 @@ socket.on("wallInfo", function(wallsData)
 {
   walls = wallsData;
 });
+
+socket.on("selfId", function(selfIdData)
+{
+  selfId = selfIdData;
+})

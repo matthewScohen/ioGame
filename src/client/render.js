@@ -9,15 +9,36 @@ ctx.textBaseline="middle";
 
 var renderPlayers = function (players, xOffset, yOffset)
 {
-  for(var i = 0 ; i < players.length; i++)
-  {
-    ctx.fillStyle = players[i].color;
-    ctx.beginPath();
-    ctx.arc(players[i].xPos - xOffset, players[i].yPos - yOffset, players[i].radius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.fillStyle = "black";
-    ctx.fillText(players[i].score, players[i].xPos - xOffset, players[i].yPos - yOffset);
-  }
+    for(var i = 0 ; i < players.length; i++)
+    {
+      if(players[i].id != selfId) //Dont render self
+      {
+        ctx.fillStyle = players[i].color;
+        ctx.beginPath();
+        ctx.arc(players[i].xPos - xOffset, players[i].yPos - yOffset, players[i].radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "black";
+        ctx.fillText(players[i].score, players[i].xPos - xOffset, players[i].yPos - yOffset);
+      }
+      //If the camera is not in a corner then the player should be rendered in the center of the screen because otherwise due to rounding errors
+      //the player will jitter around. 
+      else
+      {
+        var selfX = players[i].xPos - xOffset;
+        var selfY = players[i].yPos - yOffset;
+        if(xOffset > 0)
+          selfX = window.innerWidth / 2;
+        if(yOffset > 0)
+          selfY = window.innerHeight / 2;
+        ctx.fillStyle = players[i].color;
+        ctx.beginPath();
+        ctx.arc(selfX, selfY, players[i].radius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.fillStyle = "black";
+        ctx.fillText(players[i].score, selfX, selfY);
+      }
+    }
+
 }
 
 var renderBeads = function (beadX, beadY, xOffset, yOffset)
@@ -44,7 +65,6 @@ var renderGameBoard = function()
   renderPlayers(players, xOffset, yOffset);
   renderBeads(beadX, beadY, xOffset, yOffset);
   renderWalls(walls, xOffset, yOffset);
-  console.log(cameraX + " " + cameraY);
 }
 
 var startRendering = function()

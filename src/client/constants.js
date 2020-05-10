@@ -1,1 +1,1 @@
-const FPS = 240;
+const FPS = 60;
