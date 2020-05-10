@@ -44,7 +44,7 @@ class Game
     for(var i in this.players)
     {
       //Update the players position
-      this.players[i].tick();
+      this.players[i].tick(this.map.MAP_WIDTH, this.map.MAP_HEIGHT);
       //Check if the player is colliding with the bead
       if(this.bead.checkPlayerBeadCollision(this.players[i].xPos, this.players[i].yPos, this.players[i].radius)) {
         this.players[i].score++;

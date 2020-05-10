@@ -73,6 +73,6 @@ function tickServer() {
   {
       game.sockets[i].emit('playerInfo', playerInfoPack); //Send the location of all players
       game.sockets[i].emit('beadPosition', beadPosition); //Send the location of the bead
-      game.sockets[i].emit("cameraInfo", cameraInfoPack[i]); //Send each player just their camera location
+      game.sockets[i].emit("cameraInfo", cameraInfoPack[i]); //Send each player just THEIR camera location
   }
 }

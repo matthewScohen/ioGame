@@ -1,12 +1,12 @@
 var Wall = require("./../client/wall.js");
-
-const MAP_WIDTH = 2000;
-const MAP_HEIGHT = 2000;
+var Constants = require("./../client/constants.js");
 
 class Map
 {
   constructor()
   {
+    this.MAP_WIDTH = Constants.MAP_WIDTH;
+    this.MAP_HEIGHT = Constants.MAP_HEIGHT;
     this.walls = [];
     this.walls.push(new Wall(0, 0, 100, 200));
   }

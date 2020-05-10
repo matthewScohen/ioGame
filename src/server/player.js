@@ -16,9 +16,9 @@ function Player(id, xPos, yPos)
   this.score = 0;
 }
 
-Player.prototype.tick = function()
+Player.prototype.tick = function(mapWidth, mapHeight)
 {
-  //Update position
+  //Handle left input
   if(this.pressingLeft && this.xPos - this.radius >= 0)
   {
         if(this.xPos - this.radius - this.speed > 0)
@@ -26,8 +26,16 @@ Player.prototype.tick = function()
         else
           this.xPos = this.radius;
   }
-  if(this.pressingRight)
-    this.xPos += this.speed;
+  //Handle right input
+  console.log(this.xPos + this.radius + " " + mapWidth);
+  if(this.pressingRight && this.xPos + this.radius <= mapWidth)
+  {
+    if(this.xPos + this.radius + this.speed <= mapWidth)
+      this.xPos += this.speed;
+    else
+      this.xPos = mapWidth - this.radius;
+  }
+  //Handle up input
   if(this.pressingUp && this.yPos - this.radius >= 0)
   {
     if(this.yPos - this.radius - this.speed > 0)
@@ -35,8 +43,15 @@ Player.prototype.tick = function()
     else
       this.yPos = this.radius;
   }
-  if(this.pressingDown)
-    this.yPos += this.speed;
+  //Handle down input
+  if(this.pressingDown && this.yPos + this.radius <= mapHeight)
+  {
+    if(this.yPos + this.radius + this.speed < mapHeight)
+      this.yPos += this.speed;
+    else
+      this.yPos = mapHeight - this.radius;
+  }
+
 
   //Update camera
   this.cameraX = this.xPos;
