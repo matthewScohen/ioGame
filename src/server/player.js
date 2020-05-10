@@ -4,8 +4,8 @@ function Player(id, xPos, yPos)
   this.radius = 20;
   this.xPos = xPos;
   this.yPos = yPos;
-  this.cameraX = xPos;
-  this.cameraY = yPos;
+  this.cameraX = 0;
+  this.cameraY = 0;
   this.id = id;
   this.pressingLeft = false;
   this.pressingRight = false;
@@ -39,7 +39,8 @@ Player.prototype.tick = function()
     this.yPos += this.speed;
 
   //Update camera
-  
+  this.cameraX = this.xPos;
+  this.cameraY = this.yPos;
 }
 
 module.exports = Player;
