@@ -42,6 +42,7 @@ var renderGameBoard = function()
   renderPlayers(players);
   renderBeads(beadX, beadY);
   renderWalls(walls);
+  console.log(cameraX + " " + cameraY);
 }
 
 var startRendering = function()

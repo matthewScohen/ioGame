@@ -2,7 +2,6 @@ var socket = io();
 
 socket.on('playerInfo', function(newPlayers){
   players = newPlayers;
-  console.log(newPlayers);
 });
 
 socket.on('beadPosition', function(newBeadData) {
@@ -12,8 +11,8 @@ socket.on('beadPosition', function(newBeadData) {
 
 socket.on("cameraInfo", function(cameraData)
 {
-  cameraX = cameraData[0];
-  cameraY = cameraData[1];
+  cameraX = cameraData.cameraX;
+  cameraY = cameraData.cameraY;
 });
 
 socket.on("wallInfo", function(wallsData)

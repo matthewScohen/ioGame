@@ -2,5 +2,5 @@ var beadX = 0;
 var beadY = 0;
 var players = [];
 var walls = [];
-var selfX = 0;
-var selfY = 0;
+var cameraX = 0;
+var cameraY = 0;

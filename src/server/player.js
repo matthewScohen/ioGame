@@ -20,19 +20,26 @@ Player.prototype.tick = function()
 {
   //Update position
   if(this.pressingLeft && this.xPos - this.radius >= 0)
-    this.xPos -= this.speed;
+  {
+        if(this.xPos - this.radius - this.speed > 0)
+          this.xPos -= this.speed;
+        else
+          this.xPos = this.radius;
+  }
   if(this.pressingRight)
     this.xPos += this.speed;
-  if(this.pressingUp)
-    this.yPos -= this.speed;
+  if(this.pressingUp && this.yPos - this.radius >= 0)
+  {
+    if(this.yPos - this.radius - this.speed > 0)
+      this.yPos -= this.speed;
+    else
+      this.yPos = this.radius;
+  }
   if(this.pressingDown)
     this.yPos += this.speed;
 
   //Update camera
+  
 }
 
-Player.prototype.serialize = function()
-{
-
-}
 module.exports = Player;

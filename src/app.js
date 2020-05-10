@@ -37,8 +37,12 @@ io.sockets.on('connection', function(socket){
 function tickServer() {
   var playerInfoPack = [];
   var beadPosition = [];
+  var cameraInfoPack = [];
   //Update game
   game.tick();
+
+
+  /**** SEND DATA TO SOCKETS ****/
   //Add the bead data to the bead info pack
   beadPosition.push(game.bead.xPos, game.bead.yPos);
   //Add all the player data to the player info pack
@@ -53,10 +57,20 @@ function tickServer() {
           radius:game.players[i].radius
         });
   }
-  //Send the player and bead info to all connected users
-  for(var i in game.sockets)
+  //Add all the camera data to a list
+  for(var i in game.players)
   {
-      game.sockets[i].emit('playerInfo', playerInfoPack);
-      game.sockets[i].emit('beadPosition', beadPosition);
+    cameraInfoPack[i] =
+    {
+      cameraX:game.players[i].cameraX,
+      cameraY:game.players[i].cameraY
+    }
+  }
+  //Send game information to all sockets...
+  for(var i in game.players)
+  {
+      game.sockets[i].emit('playerInfo', playerInfoPack); //Send the location of all players
+      game.sockets[i].emit('beadPosition', beadPosition); //Send the location of the bead
+      game.sockets[i].emit("cameraInfo", cameraInfoPack[i]); //Send each player just their camera location
   }
 }
