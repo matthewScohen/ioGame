@@ -27,7 +27,6 @@ Player.prototype.tick = function(mapWidth, mapHeight)
           this.xPos = this.radius;
   }
   //Handle right input
-  console.log(this.xPos + this.radius + " " + mapWidth);
   if(this.pressingRight && this.xPos + this.radius <= mapWidth)
   {
     if(this.xPos + this.radius + this.speed <= mapWidth)
@@ -51,11 +50,23 @@ Player.prototype.tick = function(mapWidth, mapHeight)
     else
       this.yPos = mapHeight - this.radius;
   }
-
-
   //Update camera
+  this.centerCamera();
+}
+
+Player.prototype.setPosition = function(x, y)
+{
+  this.xPos = x;
+  this.yPos = y;
+  this.centerCamera();
+}
+
+Player.prototype.centerCamera = function()
+{
   this.cameraX = this.xPos;
   this.cameraY = this.yPos;
 }
+
+
 
 module.exports = Player;
