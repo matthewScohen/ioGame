@@ -11,7 +11,7 @@ var renderPlayers = function (players, xOffset, yOffset)
 {
     for(var i in players)
     {
-      if(players[i].id != self.selfId) //Dont render self
+      if(players[i].id != self.id) //Dont render self
       {
         ctx.fillStyle = players[i].color;
         ctx.beginPath();
