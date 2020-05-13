@@ -1,6 +1,9 @@
 function Player(id, xPos, yPos)
 {
-  this.speed = 8;
+  this.xVel = 0;
+  this.yVel = 0;
+  this.acceleration = 1;
+  this.maxSpeed = 5;
   this.radius = 20;
   this.xPos = xPos;
   this.yPos = yPos;
@@ -18,37 +21,65 @@ function Player(id, xPos, yPos)
 
 Player.prototype.tick = function(mapWidth, mapHeight)
 {
+  /**** HORIZONTAL MOVEMENT ****/
+  if(!this.pressingLeft && !this.pressingRight) //Allows the player to stop instantly instead of sliding
+    this.xVel = 0;
   //Handle left input
-  if(this.pressingLeft && this.xPos - this.radius >= 0)
+  if(this.pressingLeft && this.xPos - this.radius >= 0 && !this.pressingRight) ///If on the map, pressing left, and not pressing right
   {
-        if(this.xPos - this.radius - this.speed > 0)
-          this.xPos -= this.speed;
-        else
-          this.xPos = this.radius;
+      if(!(this.xVel <= -this.maxSpeed))//If not at the max speed
+        this.xVel -= this.acceleration;//Update velocity
+      this.xVel = Math.max(this.xVel, -this.maxSpeed);
   }
   //Handle right input
-  if(this.pressingRight && this.xPos + this.radius <= mapWidth)
+  if(this.pressingRight && this.xPos + this.radius < mapWidth && !this.pressingLeft) //If on the map, pressing right, and not pressing left
   {
-    if(this.xPos + this.radius + this.speed <= mapWidth)
-      this.xPos += this.speed;
-    else
-      this.xPos = mapWidth - this.radius;
+    if(!(this.xVel >= this.maxSpeed)) //If not at the max speed
+      this.xVel += this.acceleration;//Update velocity
+    this.xVel = Math.min(this.xVel, this.maxSpeed);
   }
-  //Handle up input
-  if(this.pressingUp && this.yPos - this.radius >= 0)
+  //Update x position
+  if(this.xPos - this.radius + this.xVel > 0 && this.xPos + this.radius + this.xVel <= mapWidth) //If in the middle of the map
+    this.xPos += this.xVel;//Update position
+  else if(!(this.xPos - this.radius + this.xVel > 0)) //If adding the velocity would move the player off the left side of the map
   {
-    if(this.yPos - this.radius - this.speed > 0)
-      this.yPos -= this.speed;
-    else
-      this.yPos = this.radius;
+      this.xPos = this.radius;
+      this.xVel = 0; //Make velocity 0 because player hit the wall
+  }
+  else if(!(this.xPos + this.radius + this.xVel < mapWidth)) //If adding the velocity would move the player off the right side of the map
+  {
+    this.xPos = mapWidth - this.radius;
+    this.xVel = 0; //Make velocity 0 because player hit the wall
+  }
+  /**** VERTICLE MOVEMENT ****/
+  if(!this.pressingUp && !this.pressingDown) //If the player is not pressing up or down stop their verticle movement
+    this.yVel = 0;
+  //Handle up input
+  if(this.pressingUp && this.yPos - this.radius >= 0 && !this.pressingDown) //If on the map, pressing up, and not pressing down
+  {
+    if(!(this.yVel <= -this.maxSpeed)) //If not at the max speed
+      this.yVel -= this.acceleration;//Update velocity
+    this.yVel = Math.max(this.yVel, -this.maxSpeed);
   }
   //Handle down input
-  if(this.pressingDown && this.yPos + this.radius <= mapHeight)
+  if(this.pressingDown && this.yPos + this.radius <= mapHeight && !this.pressingUp) //If pressing down, on the map, and not pressing up
   {
-    if(this.yPos + this.radius + this.speed < mapHeight)
-      this.yPos += this.speed;
-    else
-      this.yPos = mapHeight - this.radius;
+    if(!(this.yVel >= this.maxSpeed)) //If not at the max speed
+      this.yVel += this.acceleration; //Update velocity
+    this.yVel = Math.min(this.yVel, this.maxSpeed);
+  }
+  //Update y position
+  if(this.yPos - this.radius + this.yVel >= 0 && this.yPos + this.radius + this.yVel <= mapHeight) //If in the middle of the map
+    this.yPos += this.yVel; //Update position
+  else if(!(this.yPos - this.radius + this.yVel >= 0)) //If adding the yVel would move the player off the top of the map
+  {
+    this.yPos = this.radius;
+    this.yVel = 0; //Make the velocity 0 because the player hit the wall
+  }
+  else if(!(this.yPos + this.radius + this.yVel <= mapHeight)) //If addding the yVel would move the player off the bottom of the map
+  {
+    this.yPos = mapHeight - this.radius;
+    this.yVel = 0;
   }
   //Update camera
   this.centerCamera();
