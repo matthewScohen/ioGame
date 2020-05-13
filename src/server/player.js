@@ -2,8 +2,8 @@ function Player(id, xPos, yPos)
 {
   this.xVel = 0;
   this.yVel = 0;
-  this.acceleration = 1;
   this.maxSpeed = 5;
+  this.acceleration = this.maxSpeed / 5;
   this.radius = 20;
   this.xPos = xPos;
   this.yPos = yPos;
@@ -19,7 +19,7 @@ function Player(id, xPos, yPos)
   this.score = 0;
 }
 
-Player.prototype.tick = function(mapWidth, mapHeight)
+Player.prototype.tick = function(mapWidth, mapHeight, walls)
 {
   /**** HORIZONTAL MOVEMENT ****/
   if(!this.pressingLeft && !this.pressingRight) //Allows the player to stop instantly instead of sliding
@@ -80,6 +80,27 @@ Player.prototype.tick = function(mapWidth, mapHeight)
   {
     this.yPos = mapHeight - this.radius;
     this.yVel = 0;
+  }
+  //Check if the player is colliding with a wall
+  for(var j in walls)
+  {
+    if(walls[j].collidingWithPlayer(this)) //If the player is colliding with a wall
+    {
+      var pointX = this.xPos;
+      var pointY = this.yPos;
+
+      if(this.xPos < walls[j].xPos) //If the player is on the left side of the wall
+        pointX = walls[j].xPos - this.radius;
+      if(this.xPos > walls[j].xPos +walls[j].width) //If the player is on the right side of the wall
+        pointX = walls[j].xPos + walls[j].width + this.radius;
+      if(this.yPos < walls[j].yPos) //If the player is on the top side of the wall
+        pointY = walls[j].yPos - this.radius;
+      if(this.yPos > walls[j].yPos + walls[j].height) //If the player is on the bottom side of the wall
+        pointY = walls[j].yPos + walls[j].height + this.radius;
+
+      //Place the player outside the wall
+      this.setPosition(pointX, pointY);
+    }
   }
   //Update camera
   this.centerCamera();

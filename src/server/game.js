@@ -44,34 +44,13 @@ class Game
     for(var i in this.players)
     {
       //Update the players position
-      this.players[i].tick(this.map.MAP_WIDTH, this.map.MAP_HEIGHT);
+      this.players[i].tick(this.map.MAP_WIDTH, this.map.MAP_HEIGHT, this.map.walls);
       //Check if the player is colliding with the bead
       if(this.bead.checkPlayerBeadCollision(this.players[i].xPos, this.players[i].yPos, this.players[i].radius))
       {
         this.players[i].score++;
         this.bead.xPos = Math.floor(Math.random() * 690 + 10);
         this.bead.yPos = Math.floor(Math.random() * 690 + 10);
-      }
-      //Check if the player is colliding with a wall
-      for(var j in this.map.walls)
-      {
-        if(this.map.walls[j].collidingWithPlayer(this.players[i])) //If the player is colliding with a wall
-        {
-          var pointX = this.players[i].xPos;
-          var pointY = this.players[i].yPos;
-
-          if(this.players[i].xPos < this.map.walls[j].xPos) //If the player is on the left side of the wall
-            pointX = this.map.walls[j].xPos - this.players[i].radius;
-          if(this.players[i].xPos > this.map.walls[j].xPos + this.map.walls[j].width) //If the player is on the right side of the wall
-            pointX = this.map.walls[j].xPos + this.map.walls[j].width + this.players[i].radius;
-          if(this.players[i].yPos < this.map.walls[j].yPos) //If the player is on the top side of the wall
-            pointY = this.map.walls[j].yPos - this.players[i].radius;
-          if(this.players[i].yPos > this.map.walls[j].yPos + this.map.walls[j].height) //If the player is on the bottom side of the wall
-            pointY = this.map.walls[j].yPos + this.map.walls[j].height + this.players[i].radius;
-
-          //Place the player outside the wall
-          this.players[i].setPosition(pointX, pointY);
-        }
       }
     }
   }
