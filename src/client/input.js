@@ -22,4 +22,9 @@ var startCaptureInput = function()
       else if(event.keyCode === 87) // w
           socket.emit('keyPress',{inputId:'up',state:false});
   }
+
+  document.onmousedown = function(event)
+  {
+    
+  }
 }

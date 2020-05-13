@@ -23,7 +23,6 @@ var game = new Game();
 
 io.sockets.on('connection', function(socket){
     socket.id = Math.random();
-    socket.emit("selfId", socket.id);
     socket.emit("wallInfo", game.map.walls);
     game.addPlayer(socket);
 
@@ -59,20 +58,12 @@ function tickServer() {
           id:game.players[i].id
         });
   }
-  //Add all the camera data to a list
-  for(var i in game.players)
-  {
-    cameraInfoPack[i] =
-    {
-      cameraX:game.players[i].cameraX,
-      cameraY:game.players[i].cameraY
-    }
-  }
   //Send game information to all sockets...
   for(var i in game.players)
   {
       game.sockets[i].emit('playerInfo', playerInfoPack); //Send the location of all players
       game.sockets[i].emit('beadPosition', beadPosition); //Send the location of the bead
       game.sockets[i].emit("cameraInfo", cameraInfoPack[i]); //Send each player just THEIR camera location
+      game.sockets[i].emit("selfInfo", game.players[i]); //Send each player the information about themselves
   }
 }

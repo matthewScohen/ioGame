@@ -1,13 +1,12 @@
 class Bulllet
 {
-  constructor(xPos, yPos, xVel, yVel, originPlayer)
+  constructor(xPos, yPos, xVel, yVel)
   {
     this.radius = 5;
     this.xPos = xPos;
     this.yPos = yPos;
     this.xVel = xVel;
     this.yVel = yVel;
-    this.originPlayer = originPlayer;
   }
 
   tick()

@@ -1,5 +1,11 @@
 function Player(id, xPos, yPos)
 {
+  this.id = id;
+  this.color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+  this.score = 0;
+  this.cameraX = 0;
+  this.cameraY = 0;
+  //Movement properties
   this.xVel = 0;
   this.yVel = 0;
   this.maxSpeed = 5;
@@ -7,16 +13,14 @@ function Player(id, xPos, yPos)
   this.radius = 20;
   this.xPos = xPos;
   this.yPos = yPos;
-  this.cameraX = 0;
-  this.cameraY = 0;
-  this.id = id;
   this.pressingLeft = false;
   this.pressingRight = false;
   this.pressingUp = false;
   this.pressingDown = false;
-
-  this.color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
-  this.score = 0;
+  //Combat properties
+  this.bullets = [];
+  this.health = 100;
+  this.bulletCount = 10;
 }
 
 Player.prototype.tick = function(mapWidth, mapHeight, walls)
@@ -119,6 +123,10 @@ Player.prototype.centerCamera = function()
   this.cameraY = this.yPos;
 }
 
+Player.prototype.shoot = function(direction)
+{
+  
+}
 
 
 module.exports = Player;

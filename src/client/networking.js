@@ -9,18 +9,12 @@ socket.on('beadPosition', function(newBeadData) {
   beadY = newBeadData[1];
 });
 
-socket.on("cameraInfo", function(cameraData)
+socket.on("selfInfo", function(selfData)
 {
-  cameraX = cameraData.cameraX;
-  cameraY = cameraData.cameraY;
+  self = selfData;
 });
 
 socket.on("wallInfo", function(wallsData)
 {
   walls = wallsData;
 });
-
-socket.on("selfId", function(selfIdData)
-{
-  selfId = selfIdData;
-})

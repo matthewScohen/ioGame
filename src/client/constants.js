@@ -6,5 +6,11 @@ const WALL_TOP = 1;
 const WALL_RIGHT = 2;
 const WALL_BOTTOM = 3;
 
-module.exports.MAP_WIDTH = MAP_WIDTH;
-module.exports.MAP_HEIGHT = MAP_HEIGHT;
+try
+{
+  module.exports.MAP_WIDTH = MAP_WIDTH;
+  module.exports.MAP_HEIGHT = MAP_HEIGHT;
+} catch (e)
+{
+  //No error here because the server uses the modules. This prevents the browser console from showing an error since it does not use this code
+}
