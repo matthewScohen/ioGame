@@ -1,8 +1,8 @@
 class Bullet
 {
-  constructor(xPos, yPos, speed, direction)
+  constructor(xPos, yPos, speed, radius, direction)
   {
-    this.radius = 5;
+    this.radius = radius;
     this.xPos = xPos;
     this.yPos = yPos;
     this.speed = speed;
@@ -28,7 +28,7 @@ class Bullet
         return true;
       else
         return false;
-    }    
+    }
   }
 }
 

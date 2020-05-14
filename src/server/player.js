@@ -16,7 +16,7 @@ function Player(id, xPos, yPos)
   this.yVel = 0;
   this.maxSpeed = 5;
   this.acceleration = this.maxSpeed / 5;
-  this.radius = 20;
+  this.radius = 40;
   this.xPos = xPos;
   this.yPos = yPos;
   //View properties
@@ -26,6 +26,9 @@ function Player(id, xPos, yPos)
   this.bullets = [];
   this.health = 100;
   this.bulletCount = 10;
+  this.fireDelay = 20;
+  this.fireRate = 2;
+  this.fireCooldown = 0;
 }
 
 Player.prototype.tick = function(mapWidth, mapHeight, walls)
@@ -111,6 +114,10 @@ Player.prototype.tick = function(mapWidth, mapHeight, walls)
       this.setPosition(pointX, pointY);
     }
   }
+  //Update shooting delay
+  if(this.fireCooldown > 0)
+    this.fireCooldown -= this.fireRate;
+  console.log(this.fireCooldown, this.fireDelay);
   //Update camera
   this.centerCamera();
 }
@@ -130,11 +137,15 @@ Player.prototype.centerCamera = function()
 
 Player.prototype.shoot = function(direction)
 {
-  var bulletRadius = 5;
-  var bulletX = this.xPos + 1 * (this.radius + bulletRadius) * Math.sin(direction);
-  var bulletY = this.yPos + 1 * (this.radius + bulletRadius) * Math.cos(direction);
-  var bulletSpeed = 20;
-  this.bullets.push(new Bullet(bulletX, bulletY, bulletSpeed, direction));
+  if(this.fireCooldown <= 0)
+  {
+    var bulletRadius = 15;
+    var bulletX = this.xPos + 1.1 * (this.radius + bulletRadius) * Math.sin(direction);
+    var bulletY = this.yPos + 1.1 * (this.radius + bulletRadius) * Math.cos(direction);
+    var bulletSpeed = 15;
+    this.fireCooldown = this.fireDelay;
+    this.bullets.push(new Bullet(bulletX, bulletY, bulletSpeed, bulletRadius, direction));
+  }
 }
 
 Player.prototype.takeDamage = function(damageAmount)

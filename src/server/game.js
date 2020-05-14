@@ -82,7 +82,6 @@ class Game
     //For all players...
     for(var i in this.players)
     {
-      console.log(this.players[i].bullets);
       //Update the players position
       this.players[i].tick(this.map.MAP_WIDTH, this.map.MAP_HEIGHT, this.map.walls);
       //Check if the player is colliding with the bead
