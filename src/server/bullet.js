@@ -17,15 +17,18 @@ class Bullet
     this.yPos += this.yVel;
   }
 
-  collidingWithPlayer(player)
+  collidingWithCircle(circle)
   {
-    var xDiff = this.xPos - player.xPos;
-    var yDiff = this.yPos - player.yPos;
-    var dist = Math.sqrt(xDiff*xDiff + yDiff*yDiff);
-    if(dist < this.radius + player.radius)
-      return true;
-    else
-      return false;
+    if(circle != null)
+    {
+      var xDiff = this.xPos - circle.xPos;
+      var yDiff = this.yPos - circle.yPos;
+      var dist = Math.sqrt(xDiff*xDiff + yDiff*yDiff);
+      if(dist < this.radius + circle.radius)
+        return true;
+      else
+        return false;
+    }    
   }
 }
 

@@ -45,18 +45,38 @@ class Game
 
   tick()
   {
+    /*** If the bullet is removed return out of the loop to avoid checking for collisions with a null bullet ***/
     //Update all the bullets
     for(var i in this.players)
       for(var j in this.players[i].bullets)
       {
+        //Tick the bullet
         this.players[i].bullets[j].tick();
         //If bullet is out of bounds remove it
         if(this.players[i].bullets[j].xPos < 0 || this.players[i].bullets[j].xPos > this.map.MAP_WIDTH ||
             this.players[i].bullets[j].yPos < 0 || this.players[i].bullets[j].yPos > this.map.MAP_HEIGHT)
         {
-          delete this.players[i].bullets[j];
-          this.players[i].bullets.splice(j, 1);
+            this.players[i].killBullet(j);
+            return;
         }
+        //If the bullet is in a wall remove it
+        for(var k in this.map.walls)
+          if(this.map.walls[k].collidingWithCircle(this.players[i].bullets[j]))
+          {
+            this.players[i].killBullet(j);
+            return;
+          }
+        for(var k in this.players)
+        {
+          //If the bullet is colliding with a player damage the player and remove it
+          if(this.players[i].bullets[j].collidingWithCircle(this.players[k]))
+          {
+            this.players[k].takeDamage(10);//Damage the player (k) who was hit
+            this.players[i].killBullet(j);//Remove the bullet from the player (i) who the bullet belongs to
+            return;
+          }
+        }
+
       }
 
     //For all players...

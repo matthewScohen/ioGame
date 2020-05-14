@@ -18,7 +18,7 @@ var renderPlayers = function (players, xOffset, yOffset)
         ctx.arc(players[i].xPos - xOffset, players[i].yPos - yOffset, players[i].radius, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = "black";
-        ctx.fillText(players[i].score, players[i].xPos - xOffset, players[i].yPos - yOffset);
+        ctx.fillText(players[i].health, players[i].xPos - xOffset, players[i].yPos - yOffset);
       }
       //If the self.camera is not in a corner then the player should be rendered in the center of the screen because otherwise due to rounding errors
       //the player will jitter around.
@@ -36,7 +36,7 @@ var renderPlayers = function (players, xOffset, yOffset)
         ctx.arc(selfX, selfY, players[i].radius, 0, Math.PI * 2);
         ctx.fill();
         ctx.fillStyle = "black";
-        ctx.fillText(players[i].score, selfX, selfY);
+        ctx.fillText(players[i].health, selfX, selfY);
       }
     }
 

@@ -8,29 +8,32 @@ class Wall
     this.height = height;
   }
 
-  collidingWithPlayer(player) // https://yal.cc/rectangle-circle-intersection-test/
+  collidingWithCircle(circle) // https://yal.cc/rectangle-circle-intersection-test/
   {
-    var pointX = player.xPos;
-    var pointY = player.yPos;
+    if(circle != null) //Make sure the circle hasn't been deleted, eg. a bullet has been removed already
+    {
+      var pointX = circle.xPos;
+      var pointY = circle.yPos;
 
-    if(player.xPos < this.xPos) //Check left edge
-      pointX = this.xPos;
-    else if(player.xPos > this.xPos + this.width) //Check right edge
-      pointX = this.xPos + this.width;
-    if(player.yPos < this.yPos) //Check top edge
-      pointY = this.yPos;
-    else if(player.yPos > this.yPos + this.height) //Check bottom edge
-      pointY = this.yPos + this.height;
+      if(circle.xPos < this.xPos) //Check left edge
+        pointX = this.xPos;
+      else if(circle.xPos > this.xPos + this.width) //Check right edge
+        pointX = this.xPos + this.width;
+      if(circle.yPos < this.yPos) //Check top edge
+        pointY = this.yPos;
+      else if(circle.yPos > this.yPos + this.height) //Check bottom edge
+        pointY = this.yPos + this.height;
 
-    var xDiff = player.xPos - pointX;
-    var yDiff = player.yPos - pointY;
+      var xDiff = circle.xPos - pointX;
+      var yDiff = circle.yPos - pointY;
 
-    var distance = Math.sqrt(xDiff*xDiff + yDiff*yDiff);
+      var distance = Math.sqrt(xDiff*xDiff + yDiff*yDiff);
 
-    if(distance < player.radius)
-      return true;
-    else
-      return false;
+      if(distance < circle.radius)
+        return true;
+      else
+        return false;
+    }
   }
 }
 

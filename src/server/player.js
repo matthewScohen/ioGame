@@ -93,7 +93,7 @@ Player.prototype.tick = function(mapWidth, mapHeight, walls)
   //Check if the player is colliding with a wall
   for(var j in walls)
   {
-    if(walls[j].collidingWithPlayer(this)) //If the player is colliding with a wall
+    if(walls[j].collidingWithCircle(this)) //If the player is colliding with a wall
     {
       var pointX = this.xPos;
       var pointY = this.yPos;
@@ -135,6 +135,17 @@ Player.prototype.shoot = function(direction)
   var bulletY = this.yPos + 1 * (this.radius + bulletRadius) * Math.cos(direction);
   var bulletSpeed = 20;
   this.bullets.push(new Bullet(bulletX, bulletY, bulletSpeed, direction));
+}
+
+Player.prototype.takeDamage = function(damageAmount)
+{
+  this.health -= damageAmount;
+}
+
+Player.prototype.killBullet = function(bulletIndex)
+{
+  delete this.bullets[bulletIndex];
+  this.bullets.splice(bulletIndex, 1);
 }
 
 

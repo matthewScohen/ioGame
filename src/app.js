@@ -58,7 +58,8 @@ function tickServer() {
           score:game.players[i].score,
           radius:game.players[i].radius,
           id:game.players[i].id,
-          bullets:game.players[i].bullets
+          bullets:game.players[i].bullets,
+          health:game.players[i].health
         });
   }
   //Send game information to all sockets...
