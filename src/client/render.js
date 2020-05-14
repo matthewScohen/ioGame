@@ -54,7 +54,7 @@ var renderBullets = function(bullets, xOffset, yOffset)
 {
   for(var i in bullets)
   {
-    ctx.fillStyle = "black";
+    ctx.fillStyle = bullets[i].color;
     ctx.beginPath();
     ctx.arc(bullets[i].xPos - xOffset, bullets[i].yPos - yOffset, bullets[i].radius, 0, Math.PI * 2);
     ctx.fill();
@@ -73,6 +73,8 @@ var renderGameBoard = function()
   if(self != null) //Do not render until information has been sent from the server at least once
   {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = "#BAB7B6";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
     //Make sure self.camera is within boundaries
     if(self.cameraX < MAP_WIDTH / 2)
       xOffset = Math.max(self.cameraX - window.innerWidth / 2, 0);
@@ -82,7 +84,7 @@ var renderGameBoard = function()
       yOffset = Math.max(self.cameraY - window.innerHeight / 2, 0);
     if(self.cameraY > MAP_HEIGHT / 2)
       yOffset = Math.min(self.cameraY - window.innerHeight / 2, MAP_HEIGHT - window.innerHeight);
-
+      
     renderPlayers(players, xOffset, yOffset);
     renderBeads(beadX, beadY, xOffset, yOffset);
     renderWalls(walls, xOffset, yOffset);

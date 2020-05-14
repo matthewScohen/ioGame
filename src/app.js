@@ -65,8 +65,11 @@ function tickServer() {
   //Send game information to all sockets...
   for(var i in game.players)
   {
+    if(game.sockets[i] != null) //Make sure the player hasn't disconnected
+    {
       game.sockets[i].emit('playerInfo', playerInfoPack); //Send the location of all players
       game.sockets[i].emit('beadPosition', beadPosition); //Send the location of the bead
       game.sockets[i].emit("selfInfo", game.players[i]); //Send each player the information about themselves
+    }
   }
 }

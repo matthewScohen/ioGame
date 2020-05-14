@@ -3,7 +3,8 @@ function Player(id, xPos, yPos)
 {
   //General Properties
   this.id = id;
-  this.color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+  //this.color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
+  this.color = "#5893F4";
   this.score = 0;
   //Input properties
   this.pressingLeft = false;
@@ -15,7 +16,7 @@ function Player(id, xPos, yPos)
   this.xVel = 0;
   this.yVel = 0;
   this.maxSpeed = 5;
-  this.acceleration = this.maxSpeed / 5;
+  this.acceleration = 0.5;
   this.radius = 40;
   this.xPos = xPos;
   this.yPos = yPos;
@@ -26,7 +27,7 @@ function Player(id, xPos, yPos)
   this.bullets = [];
   this.health = 100;
   this.bulletCount = 10;
-  this.fireDelay = 20;
+  this.fireDelay = 40;
   this.fireRate = 2;
   this.fireCooldown = 0;
 }
@@ -34,8 +35,13 @@ function Player(id, xPos, yPos)
 Player.prototype.tick = function(mapWidth, mapHeight, walls)
 {
   /**** HORIZONTAL MOVEMENT ****/
-  if(!this.pressingLeft && !this.pressingRight) //Allows the player to stop instantly instead of sliding
-    this.xVel = 0;
+  if(!this.pressingLeft && !this.pressingRight) //Slow the player if they aren't pressing buttons
+    if(this.xVel < 1 && this.xVel > -1)
+      this.xVel = 0;
+    else if(this.xVel > 0)
+      this.xVel -= this.acceleration;
+    else if(this.xVel < 0)
+      this.xVel += this.acceleration;
   //Handle left input
   if(this.pressingLeft && this.xPos - this.radius >= 0 && !this.pressingRight) ///If on the map, pressing left, and not pressing right
   {
@@ -65,7 +71,13 @@ Player.prototype.tick = function(mapWidth, mapHeight, walls)
   }
   /**** VERTICLE MOVEMENT ****/
   if(!this.pressingUp && !this.pressingDown) //If the player is not pressing up or down stop their verticle movement
-    this.yVel = 0;
+  //Slow to stop
+    if(this.yVel < 1 && this.yVel > -1)
+      this.yVel = 0;
+    else if(this.yVel > 0)
+      this.yVel -= this.acceleration;
+    else if(this.yVel < 0)
+      this.yVel += this.acceleration;
   //Handle up input
   if(this.pressingUp && this.yPos - this.radius >= 0 && !this.pressingDown) //If on the map, pressing up, and not pressing down
   {
@@ -117,7 +129,6 @@ Player.prototype.tick = function(mapWidth, mapHeight, walls)
   //Update shooting delay
   if(this.fireCooldown > 0)
     this.fireCooldown -= this.fireRate;
-  console.log(this.fireCooldown, this.fireDelay);
   //Update camera
   this.centerCamera();
 }

@@ -2,6 +2,7 @@ class Bullet
 {
   constructor(xPos, yPos, speed, radius, direction)
   {
+    this.color = "#5893F4"
     this.radius = radius;
     this.xPos = xPos;
     this.yPos = yPos;
