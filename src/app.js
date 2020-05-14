@@ -30,18 +30,20 @@ io.sockets.on('connection', function(socket){
         game.removePlayer(socket);
     });
     socket.on('keyPress',function(inputData){
-      game.handleInput(socket, inputData);
+      game.handleKeyInput(socket, inputData);
+    });
+    socket.on("mouseDown", function(inputData)
+    {
+      game.handleMouseInput(socket, inputData);
     });
 });
 
 function tickServer() {
   var playerInfoPack = [];
   var beadPosition = [];
-  var cameraInfoPack = [];
+  var bulletInfoPack = [];
   //Update game
   game.tick();
-
-
   /**** SEND DATA TO SOCKETS ****/
   //Add the bead data to the bead info pack
   beadPosition.push(game.bead.xPos, game.bead.yPos);
@@ -55,7 +57,8 @@ function tickServer() {
           color:game.players[i].color,
           score:game.players[i].score,
           radius:game.players[i].radius,
-          id:game.players[i].id
+          id:game.players[i].id,
+          bullets:game.players[i].bullets
         });
   }
   //Send game information to all sockets...
@@ -63,7 +66,6 @@ function tickServer() {
   {
       game.sockets[i].emit('playerInfo', playerInfoPack); //Send the location of all players
       game.sockets[i].emit('beadPosition', beadPosition); //Send the location of the bead
-      game.sockets[i].emit("cameraInfo", cameraInfoPack[i]); //Send each player just THEIR camera location
       game.sockets[i].emit("selfInfo", game.players[i]); //Send each player the information about themselves
   }
 }

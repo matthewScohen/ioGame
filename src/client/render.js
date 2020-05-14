@@ -50,6 +50,17 @@ var renderBeads = function (beadX, beadY, xOffset, yOffset)
   ctx.fill();
 }
 
+var renderBullets = function(bullets, xOffset, yOffset)
+{
+  for(var i in bullets)
+  {
+    ctx.fillStyle = "black";
+    ctx.beginPath();
+    ctx.arc(bullets[i].xPos - xOffset, bullets[i].yPos - yOffset, bullets[i].radius, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
 var renderWalls = function(walls, xOffset, yOffset)
 {
   ctx.fillStyle = "black";
@@ -75,6 +86,8 @@ var renderGameBoard = function()
     renderPlayers(players, xOffset, yOffset);
     renderBeads(beadX, beadY, xOffset, yOffset);
     renderWalls(walls, xOffset, yOffset);
+    for(var i in players)
+      renderBullets(players[i].bullets, xOffset, yOffset);
   }
 }
 

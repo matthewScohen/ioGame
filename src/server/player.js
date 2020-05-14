@@ -1,10 +1,16 @@
+var Bullet = require("./bullet.js");
 function Player(id, xPos, yPos)
 {
+  //General Properties
   this.id = id;
   this.color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
   this.score = 0;
-  this.cameraX = 0;
-  this.cameraY = 0;
+  //Input properties
+  this.pressingLeft = false;
+  this.pressingRight = false;
+  this.pressingUp = false;
+  this.pressingDown = false;
+  this.mouseDown = false;
   //Movement properties
   this.xVel = 0;
   this.yVel = 0;
@@ -13,10 +19,9 @@ function Player(id, xPos, yPos)
   this.radius = 20;
   this.xPos = xPos;
   this.yPos = yPos;
-  this.pressingLeft = false;
-  this.pressingRight = false;
-  this.pressingUp = false;
-  this.pressingDown = false;
+  //View properties
+  this.cameraX = 0;
+  this.cameraY = 0;
   //Combat properties
   this.bullets = [];
   this.health = 100;
@@ -125,7 +130,11 @@ Player.prototype.centerCamera = function()
 
 Player.prototype.shoot = function(direction)
 {
-  
+  var bulletRadius = 5;
+  var bulletX = this.xPos + 1 * (this.radius + bulletRadius) * Math.sin(direction);
+  var bulletY = this.yPos + 1 * (this.radius + bulletRadius) * Math.cos(direction);
+  var bulletSpeed = 20;
+  this.bullets.push(new Bullet(bulletX, bulletY, bulletSpeed, direction));
 }
 
 

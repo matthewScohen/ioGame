@@ -1,12 +1,14 @@
-class Bulllet
+class Bullet
 {
-  constructor(xPos, yPos, xVel, yVel)
+  constructor(xPos, yPos, speed, direction)
   {
     this.radius = 5;
     this.xPos = xPos;
     this.yPos = yPos;
-    this.xVel = xVel;
-    this.yVel = yVel;
+    this.speed = speed;
+    this.direction = direction;
+    this.xVel = this.speed * Math.sin(direction);
+    this.yVel = this.speed * Math.cos(direction);
   }
 
   tick()
@@ -26,3 +28,5 @@ class Bulllet
       return false;
   }
 }
+
+module.exports = Bullet;

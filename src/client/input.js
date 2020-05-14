@@ -25,6 +25,15 @@ var startCaptureInput = function()
 
   document.onmousedown = function(event)
   {
-    
+    var selfX = self.xPos - xOffset;
+    var selfY = self.yPos - yOffset;
+    if(xOffset > 0 && xOffset < MAP_WIDTH - window.innerWidth)
+      selfX = window.innerWidth / 2;
+    if(yOffset > 0 && yOffset < MAP_HEIGHT - window.innerHeight)
+      selfY = window.innerHeight / 2;
+    var relativeX = event.x - selfX;
+    var relativeY = event.y - selfY;
+    var direction = Math.atan2(relativeX, relativeY);
+    socket.emit("mouseDown", {direction: direction});
   }
 }

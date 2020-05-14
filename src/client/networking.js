@@ -2,6 +2,8 @@ var socket = io();
 
 socket.on('playerInfo', function(newPlayers){
   players = newPlayers;
+  for(var i in players)
+    console.log(players[i].bullets);
 });
 
 socket.on('beadPosition', function(newBeadData) {
