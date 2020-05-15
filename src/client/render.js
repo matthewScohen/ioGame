@@ -14,6 +14,7 @@ var renderPlayers = function (players, xOffset, yOffset)
       if(players[i].id != self.id) //Dont render self
       {
         ctx.fillStyle = players[i].color;
+        ctx.font = (players[i].radius/1.5).toString() + "px Arial";
         ctx.beginPath();
         ctx.arc(players[i].xPos - xOffset, players[i].yPos - yOffset, players[i].radius, 0, Math.PI * 2);
         ctx.fill();
@@ -74,6 +75,7 @@ var renderRespawnScreen = function()
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.globalAlpha = 1;
+  respawnButton.render(ctx);
 }
 
 var renderGameBoard = function()
@@ -99,7 +101,11 @@ var renderGameBoard = function()
     for(var i in players)
       renderBullets(players[i].bullets, xOffset, yOffset);
     if(self.isAlive == false)
+    {
+      respawnButton.show();
       renderRespawnScreen();
+    }
+    console.log(self.isAlive);
   }
 }
 

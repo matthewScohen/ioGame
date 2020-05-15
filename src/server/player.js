@@ -182,6 +182,7 @@ Player.prototype.kill = function()
 Player.prototype.respawn = function()
 {
   this.isAlive = true;
+  this.health = 10;
   this.setPosition(500, 500);
 }
 module.exports = Player;
