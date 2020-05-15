@@ -11,34 +11,37 @@ var renderPlayers = function (players, xOffset, yOffset)
 {
     for(var i in players)
     {
-      if(players[i].id != self.id) //Dont render self
+      if(players[i].health > 0)
       {
-        ctx.fillStyle = players[i].color;
-        ctx.font = (players[i].radius/1.5).toString() + "px Arial";
-        ctx.beginPath();
-        ctx.arc(players[i].xPos - xOffset, players[i].yPos - yOffset, players[i].radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = "black";
-        ctx.fillText(players[i].health, players[i].xPos - xOffset, players[i].yPos - yOffset);
-      }
-      //If the self.camera is not in a corner then the player should be rendered in the center of the screen because otherwise due to rounding errors
-      //the player will jitter around.
-      else
-      {
+        if(players[i].id != self.id) //Dont render self
+        {
+          ctx.fillStyle = players[i].color;
+          ctx.font = (players[i].radius/1.5).toString() + "px Arial";
+          ctx.beginPath();
+          ctx.arc(players[i].xPos - xOffset, players[i].yPos - yOffset, players[i].radius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "black";
+          ctx.fillText(players[i].health, players[i].xPos - xOffset, players[i].yPos - yOffset);
+        }
+        //If the self.camera is not in a corner then the player should be rendered in the center of the screen because otherwise due to rounding errors
+        //the player will jitter around.
+        else
+        {
 
-        var selfX = players[i].xPos - xOffset;
-        var selfY = players[i].yPos - yOffset;
-        if(xOffset > 0 && xOffset < MAP_WIDTH - window.innerWidth)
-          selfX = window.innerWidth / 2;
-        if(yOffset > 0 && yOffset < MAP_HEIGHT - window.innerHeight)
-          selfY = window.innerHeight / 2;
-        ctx.fillStyle = players[i].color;
-        ctx.beginPath();
-        ctx.arc(selfX, selfY, players[i].radius, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillStyle = "black";
-        ctx.fillText(players[i].health, selfX, selfY);
-      }
+          var selfX = players[i].xPos - xOffset;
+          var selfY = players[i].yPos - yOffset;
+          if(xOffset > 0 && xOffset < MAP_WIDTH - window.innerWidth)
+            selfX = window.innerWidth / 2;
+          if(yOffset > 0 && yOffset < MAP_HEIGHT - window.innerHeight)
+            selfY = window.innerHeight / 2;
+          ctx.fillStyle = players[i].color;
+          ctx.beginPath();
+          ctx.arc(selfX, selfY, players[i].radius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.fillStyle = "black";
+          ctx.fillText(players[i].health, selfX, selfY);
+        }
+      }      
     }
 
 }
@@ -105,7 +108,6 @@ var renderGameBoard = function()
       respawnButton.show();
       renderRespawnScreen();
     }
-    console.log(self.isAlive);
   }
 }
 
