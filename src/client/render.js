@@ -68,6 +68,14 @@ var renderWalls = function(walls, xOffset, yOffset)
     ctx.fillRect(walls[i].xPos - xOffset, walls[i].yPos - yOffset, walls[i].width, walls[i].height);
 }
 
+var renderRespawnScreen = function()
+{
+  ctx.globalAlpha = 0.8;
+  ctx.fillStyle = "black";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  ctx.globalAlpha = 1;
+}
+
 var renderGameBoard = function()
 {
   if(self != null) //Do not render until information has been sent from the server at least once
@@ -84,12 +92,14 @@ var renderGameBoard = function()
       yOffset = Math.max(self.cameraY - window.innerHeight / 2, 0);
     if(self.cameraY > MAP_HEIGHT / 2)
       yOffset = Math.min(self.cameraY - window.innerHeight / 2, MAP_HEIGHT - window.innerHeight);
-      
+
     renderPlayers(players, xOffset, yOffset);
     renderBeads(beadX, beadY, xOffset, yOffset);
     renderWalls(walls, xOffset, yOffset);
     for(var i in players)
       renderBullets(players[i].bullets, xOffset, yOffset);
+    if(self.isAlive == false)
+      renderRespawnScreen();
   }
 }
 

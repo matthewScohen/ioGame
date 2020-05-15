@@ -3,6 +3,8 @@ function Player(id, xPos, yPos)
 {
   //General Properties
   this.id = id;
+  this.name = "";
+  this.isAlive = true;
   //this.color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
   this.color = "#5893F4";
   this.score = 0;
@@ -25,7 +27,7 @@ function Player(id, xPos, yPos)
   this.cameraY = 0;
   //Combat properties
   this.bullets = [];
-  this.health = 100;
+  this.health = 10;
   this.bulletCount = 10;
   this.fireDelay = 40;
   this.fireRate = 2;
@@ -170,5 +172,16 @@ Player.prototype.killBullet = function(bulletIndex)
   this.bullets.splice(bulletIndex, 1);
 }
 
+Player.prototype.kill = function()
+{
+  this.isAlive = false;
+  this.xPos = -100;
+  this.yPos = -100;
+}
 
+Player.prototype.respawn = function()
+{
+  this.isAlive = true;
+  this.setPosition(500, 500);
+}
 module.exports = Player;

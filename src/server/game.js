@@ -19,7 +19,7 @@ class Game
     console.log("User connected:" + socket.id);
   }
 
-  removePlayer(socket)
+  disconnectPlayer(socket)
   {
     delete this.sockets[socket.id];
     delete this.players[socket.id];
@@ -41,6 +41,11 @@ class Game
   handleMouseInput(socket, inputData)
   {
     this.players[socket.id].shoot(inputData.direction);
+  }
+
+  respawnPlayer(socket)
+  {
+    this.players[socket.id].respawn();
   }
 
   tick()
@@ -68,30 +73,37 @@ class Game
           }
         for(var k in this.players)
         {
-          //If the bullet is colliding with a player damage the player and remove it
-          if(this.players[i].bullets[j].collidingWithCircle(this.players[k]))
-          {
-            this.players[k].takeDamage(10);//Damage the player (k) who was hit
-            this.players[i].killBullet(j);//Remove the bullet from the player (i) who the bullet belongs to
-            return;
-          }
+          if(this.players[k].isAlive) //Only check for collisions with alive players
+            //If the bullet is colliding with a player damage the player and remove it
+            if(this.players[i].bullets[j].collidingWithCircle(this.players[k]))
+            {
+              this.players[k].takeDamage(10);//Damage the player (k) who was hit
+              this.players[i].killBullet(j);//Remove the bullet from the player (i) who the bullet belongs to
+              return;
+            }
         }
 
       }
-
     //For all players...
     for(var i in this.players)
     {
-      //Update the players position
-      this.players[i].tick(this.map.MAP_WIDTH, this.map.MAP_HEIGHT, this.map.walls);
-      //Check if the player is colliding with the bead
-      if(this.bead.checkPlayerBeadCollision(this.players[i].xPos, this.players[i].yPos, this.players[i].radius))
+      if(this.players[i].isAlive) //Only update players that are alive
       {
-        this.players[i].score++;
-        this.bead.xPos = Math.floor(Math.random() * 690 + 10);
-        this.bead.yPos = Math.floor(Math.random() * 690 + 10);
+        //Update the players position
+        this.players[i].tick(this.map.MAP_WIDTH, this.map.MAP_HEIGHT, this.map.walls);
+        //Check if the player is colliding with the bead
+        if(this.bead.checkPlayerBeadCollision(this.players[i].xPos, this.players[i].yPos, this.players[i].radius))
+        {
+          this.players[i].score++;
+          this.bead.xPos = Math.floor(Math.random() * 690 + 10);
+          this.bead.yPos = Math.floor(Math.random() * 690 + 10);
+        }
       }
     }
+    //Remove dead players
+    for(var i in this.players)
+      if(this.players[i].health <= 0)
+        this.players[i].kill();
   }
 }
 

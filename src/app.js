@@ -27,7 +27,7 @@ io.sockets.on('connection', function(socket){
     game.addPlayer(socket);
 
     socket.on('disconnect',function(){
-        game.removePlayer(socket);
+        game.disconnectPlayer(socket);
     });
     socket.on('keyPress',function(inputData){
       game.handleKeyInput(socket, inputData);
@@ -35,6 +35,10 @@ io.sockets.on('connection', function(socket){
     socket.on("mouseDown", function(inputData)
     {
       game.handleMouseInput(socket, inputData);
+    });
+    socket.on("respawn", function()
+    {
+      game.respawnPlayer(socket);
     });
 });
 
@@ -59,17 +63,22 @@ function tickServer() {
           radius:game.players[i].radius,
           id:game.players[i].id,
           bullets:game.players[i].bullets,
-          health:game.players[i].health
+          health:game.players[i].health,
+          isAlive:game.players[i].isAlive
         });
   }
   //Send game information to all sockets...
   for(var i in game.players)
   {
-    if(game.sockets[i] != null) //Make sure the player hasn't disconnected
+    try
     {
       game.sockets[i].emit('playerInfo', playerInfoPack); //Send the location of all players
       game.sockets[i].emit('beadPosition', beadPosition); //Send the location of the bead
       game.sockets[i].emit("selfInfo", game.players[i]); //Send each player the information about themselves
+    }
+    catch(e)
+    {
+      console.log(e);
     }
   }
 }
