@@ -4,7 +4,7 @@ var startCaptureInput = function()
   respawnButton = new Button(canvas.width/2 - canvas.width/8, canvas.height/2 - canvas.height/16, canvas.width/4, canvas.height/8, "#8e9091", "#4a4c4d", "Respawn", function()
   {
     socket.emit("respawn");
-    console.log("respawn");
+    this.hide();
   });
   buttons.push(respawnButton);
 
