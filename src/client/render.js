@@ -11,7 +11,7 @@ var renderPlayers = function (players, xOffset, yOffset)
 {
     for(var i in players)
     {
-      if(players[i].isAlive)
+      if(players[i].isAlive && players[i].health > 0)
       {
         if(players[i].id != self.id) //Dont render self
         {

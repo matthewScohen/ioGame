@@ -40,7 +40,8 @@ class Game
 
   handleMouseInput(socket, inputData)
   {
-    this.players[socket.id].shoot(inputData.direction);
+    if(this.players[socket.id].isAlive)
+      this.players[socket.id].shoot(inputData.direction);
   }
 
   respawnPlayer(socket)
