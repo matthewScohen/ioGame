@@ -24,7 +24,7 @@ canvas
 
 #playButton
 {
-  font-size: 500%;
+  font-size: 300%;
   position:absolute;
   left:50%;
   top:50%;
@@ -36,7 +36,6 @@ canvas
   border-radius: 2em;
   padding:0.3em 1.2em;
   border:0.16em solid rgba(255,255,255,0);
-  display: none;
 }
 
 #playButton:hover

@@ -108,20 +108,14 @@ var renderGameBoard = function()
     {
       renderRespawnScreen();
       //Show the play button if it is hidden
-      if(document.getElementById("playButton").disabled == true)
-      {
-        document.getElementById("playButton").style.display = "inline-block";
-        document.getElementById("playButton").disabled = false;
-      }
+      if(document.getElementById("playButton").hidden == true)
+        document.getElementById("playButton").hidden = false;
     }
     if(self.isAlive == true)
     {
       //Hide the play button if it is shown
-      if(document.getElementById("playButton").disabled == false)
-      {
-        document.getElementById("playButton").style.display = "none";
-        document.getElementById("playButton").disabled = true;
-      }
+      if(document.getElementById("playButton").hidden == false)
+        document.getElementById("playButton").hidden = true;
     }
   }
 }
