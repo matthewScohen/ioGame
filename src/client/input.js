@@ -1,13 +1,5 @@
 var startCaptureInput = function()
 {
-  //Create buttons
-  respawnButton = new Button(canvas.width/2 - canvas.width/8, canvas.height/2 - canvas.height/16, canvas.width/4, canvas.height/8, "#8e9091", "#4a4c4d", "Respawn", function()
-  {
-    socket.emit("respawn");
-    this.hide();
-  });
-  buttons.push(respawnButton);
-
   document.onkeydown = function(event)
   {
       if(event.keyCode === 68)    //d
@@ -43,8 +35,5 @@ var startCaptureInput = function()
     var relativeY = event.y - selfY;
     var direction = Math.atan2(relativeX, relativeY);
     socket.emit("mouseDown", {direction: direction});
-    for(var i in buttons)
-      if(buttons[i].contains(mouseX, mouseY))
-        buttons[i].click();
   }
 }

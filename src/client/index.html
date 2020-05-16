@@ -4,11 +4,15 @@
 <head>
 </head>
 <body>
-  <canvas id="canvas"></canvas>
+
+  <div class="canvas-container">
+    <canvas id="canvas"></canvas>
+    <button id='playButton'>Play</button>
+  </div>
   <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+  <script src="client/index.js"></script>
   <script src="client/constants.js"></script>
   <script src="client/clientstate.js"></script>
-  <script src="client/Button.js"></script>
   <script src="client/render.js"></script>
   <script src="client/input.js"></script>
   <script src="client/networking.js"></script>

@@ -4,7 +4,7 @@ function Player(id, xPos, yPos)
   //General Properties
   this.id = id;
   this.name = "";
-  this.isAlive = true;
+  this.isAlive = false;
   //this.color = '#'+(Math.random()*0xFFFFFF<<0).toString(16);
   this.color = "#5893F4";
   this.score = 0;

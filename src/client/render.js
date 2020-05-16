@@ -11,7 +11,7 @@ var renderPlayers = function (players, xOffset, yOffset)
 {
     for(var i in players)
     {
-      if(players[i].health > 0)
+      if(players[i].isAlive)
       {
         if(players[i].id != self.id) //Dont render self
         {
@@ -41,7 +41,7 @@ var renderPlayers = function (players, xOffset, yOffset)
           ctx.fillStyle = "black";
           ctx.fillText(players[i].health, selfX, selfY);
         }
-      }      
+      }
     }
 
 }
@@ -78,13 +78,13 @@ var renderRespawnScreen = function()
   ctx.fillStyle = "black";
   ctx.fillRect(0, 0, canvas.width, canvas.height);
   ctx.globalAlpha = 1;
-  respawnButton.render(ctx);
 }
 
 var renderGameBoard = function()
 {
   if(self != null) //Do not render until information has been sent from the server at least once
   {
+    //Draw background
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "#BAB7B6";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -97,16 +97,31 @@ var renderGameBoard = function()
       yOffset = Math.max(self.cameraY - window.innerHeight / 2, 0);
     if(self.cameraY > MAP_HEIGHT / 2)
       yOffset = Math.min(self.cameraY - window.innerHeight / 2, MAP_HEIGHT - window.innerHeight);
-
+    //Render game
     renderPlayers(players, xOffset, yOffset);
     renderBeads(beadX, beadY, xOffset, yOffset);
     renderWalls(walls, xOffset, yOffset);
     for(var i in players)
       renderBullets(players[i].bullets, xOffset, yOffset);
+    //Play menu
     if(self.isAlive == false)
     {
-      respawnButton.show();
       renderRespawnScreen();
+      //Show the play button if it is hidden
+      if(document.getElementById("playButton").disabled == true)
+      {
+        document.getElementById("playButton").style.display = "inline-block";
+        document.getElementById("playButton").disabled = false;
+      }
+    }
+    if(self.isAlive == true)
+    {
+      //Hide the play button if it is shown
+      if(document.getElementById("playButton").disabled == false)
+      {
+        document.getElementById("playButton").style.display = "none";
+        document.getElementById("playButton").disabled = true;
+      }
     }
   }
 }
