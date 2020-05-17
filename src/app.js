@@ -65,7 +65,8 @@ function tickServer() {
           id:game.players[i].id,
           bullets:game.players[i].bullets,
           health:game.players[i].health,
-          isAlive:game.players[i].isAlive
+          isAlive:game.players[i].isAlive,
+          name:game.players[i].name
         });
   }
   //Send game information to all sockets...

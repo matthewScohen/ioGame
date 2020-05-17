@@ -7,44 +7,40 @@ ctx.font = '20px Arial';
 ctx.textAlign="center";
 ctx.textBaseline="middle";
 
+var renderPlayer = function(player, x, y)
+{
+  //Draw player
+  ctx.fillStyle = player.color;
+  ctx.beginPath();
+  ctx.arc(x, y, player.radius, 0, Math.PI * 2);
+  ctx.fill();
+  //Draw name
+  ctx.font = (player.radius/2).toString() + "px Sans-serif";
+  ctx.fillStyle = "black";
+  ctx.fillText(player.name, x, y);
+}
+
 var renderPlayers = function (players, xOffset, yOffset)
 {
     for(var i in players)
     {
       if(players[i].isAlive && players[i].health > 0)
-      {
         if(players[i].id != self.id) //Dont render self
-        {
-          ctx.fillStyle = players[i].color;
-          ctx.font = (players[i].radius/1.5).toString() + "px Arial";
-          ctx.beginPath();
-          ctx.arc(players[i].xPos - xOffset, players[i].yPos - yOffset, players[i].radius, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = "black";
-          ctx.fillText(players[i].health, players[i].xPos - xOffset, players[i].yPos - yOffset);
-        }
-        //If the self.camera is not in a corner then the player should be rendered in the center of the screen because otherwise due to rounding errors
-        //the player will jitter around.
+          renderPlayer(players[i], players[i].xPos - xOffset, players[i].yPos - yOffset);
         else
         {
-
+          //If the self.camera is not in a corner then the player should be rendered in the center of the screen because otherwise due to rounding errors
+          //the player will jitter around.
           var selfX = players[i].xPos - xOffset;
           var selfY = players[i].yPos - yOffset;
           if(xOffset > 0 && xOffset < MAP_WIDTH - window.innerWidth)
             selfX = window.innerWidth / 2;
           if(yOffset > 0 && yOffset < MAP_HEIGHT - window.innerHeight)
             selfY = window.innerHeight / 2;
-          ctx.fillStyle = players[i].color;
-          ctx.beginPath();
-          ctx.arc(selfX, selfY, players[i].radius, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.fillStyle = "black";
-          ctx.fillText(players[i].health, selfX, selfY);
+          renderPlayer(players[i], selfX, selfY);
         }
       }
     }
-
-}
 
 var renderBeads = function (beadX, beadY, xOffset, yOffset)
 {
