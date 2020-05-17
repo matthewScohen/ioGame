@@ -24,10 +24,10 @@ canvas
 
 #playButton
 {
-  font-size: 500%;
+  font-size: 200%;
   position:absolute;
   left:50%;
-  top:50%;
+  top:58%;
   transform: translate(-50%, -50%);
   background-color:#f1bb4e;
   color:#FFFFFF;
@@ -42,4 +42,12 @@ canvas
 #playButton:hover
 {
   background-color: #803300;
+}
+
+#nameInput
+{
+  position: absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%, -50%);
 }
