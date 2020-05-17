@@ -36,9 +36,10 @@ io.sockets.on('connection', function(socket){
     {
       game.handleMouseInput(socket, inputData);
     });
-    socket.on("respawn", function()
+    socket.on("respawn", function(nameValue)
     {
       game.respawnPlayer(socket);
+      game.players[socket.id].name = nameValue;
     });
 });
 

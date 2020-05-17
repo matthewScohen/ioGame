@@ -104,19 +104,16 @@ var renderGameBoard = function()
     for(var i in players)
       renderBullets(players[i].bullets, xOffset, yOffset);
     //Play menu
-    if(self.isAlive == false)
+    if(!self.isAlive)
     {
       renderRespawnScreen();
       //Show the play button if it is hidden
-      if(document.getElementById("playButton").hidden == true)
-        document.getElementById("playButton").hidden = false;
+      if(playMenuHidden())
+        showPlayMenu();
     }
-    if(self.isAlive == true)
-    {
-      //Hide the play button if it is shown
-      if(document.getElementById("playButton").hidden == false)
-        document.getElementById("playButton").hidden = true;
-    }
+    if(self.isAlive)
+      if(!playMenuHidden())
+        hidePlayMenu();
   }
 }
 
