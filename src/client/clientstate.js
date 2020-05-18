@@ -1,5 +1,6 @@
 var beadX = 0;
 var beadY = 0;
+var beads = [];
 var players = [];
 var walls = [];
 var selfId = 0;

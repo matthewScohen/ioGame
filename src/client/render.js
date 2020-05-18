@@ -42,12 +42,15 @@ var renderPlayers = function (players, xOffset, yOffset)
       }
     }
 
-var renderBeads = function (beadX, beadY, xOffset, yOffset)
+var renderBeads = function (beads, xOffset, yOffset)
 {
-  ctx.fillStyle = "blue";
-  ctx.beginPath();
-  ctx.arc(beadX - xOffset, beadY - yOffset, 10, 0, Math.PI * 2);
-  ctx.fill();
+  for(var i in beads)
+  {
+    ctx.fillStyle = beads[i].color;
+    ctx.beginPath();
+    ctx.arc(beads[i].xPos - xOffset, beads[i].yPos - yOffset, 10, 0, Math.PI * 2);
+    ctx.fill();
+  }
 }
 
 var renderBullets = function(bullets, xOffset, yOffset)
@@ -95,7 +98,7 @@ var renderGameBoard = function()
       yOffset = Math.min(self.cameraY - window.innerHeight / 2, MAP_HEIGHT - window.innerHeight);
     //Render game
     renderPlayers(players, xOffset, yOffset);
-    renderBeads(beadX, beadY, xOffset, yOffset);
+    renderBeads(beads, xOffset, yOffset);
     renderWalls(walls, xOffset, yOffset);
     for(var i in players)
       renderBullets(players[i].bullets, xOffset, yOffset);

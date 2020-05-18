@@ -14,4 +14,16 @@ Bead.prototype.checkPlayerBeadCollision = function(playerX, playerY, playerSize)
     return false;
 }
 
+Bead.prototype.serialize = function()
+{
+  var serial =
+  {
+    xPos:this.xPos,
+    yPos:this.yPos,
+    size:this.size,
+    color:this.color
+  };
+  return serial;
+}
+
 module.exports = Bead;

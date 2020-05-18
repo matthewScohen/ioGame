@@ -24,6 +24,7 @@ var game = new Game();
 io.sockets.on('connection', function(socket){
     socket.id = Math.random();
     socket.emit("wallInfo", game.map.walls);
+    socket.emit("currentBeadState", game.beads);
     game.addPlayer(socket);
 
     socket.on('disconnect',function(){
@@ -45,13 +46,10 @@ io.sockets.on('connection', function(socket){
 
 function tickServer() {
   var playerInfoPack = [];
-  var beadPosition = [];
   var bulletInfoPack = [];
   //Update game
   game.tick();
   /**** SEND DATA TO SOCKETS ****/
-  //Add the bead data to the bead info pack
-  beadPosition.push(game.bead.xPos, game.bead.yPos);
   //Add all the player data to the player info pack
   for(var i in game.players)
   {
@@ -75,7 +73,6 @@ function tickServer() {
     try
     {
       game.sockets[i].emit('playerInfo', playerInfoPack); //Send the location of all players
-      game.sockets[i].emit('beadPosition', beadPosition); //Send the location of the bead
       game.sockets[i].emit("selfInfo", game.players[i]); //Send each player the information about themselves
     }
     catch(e)

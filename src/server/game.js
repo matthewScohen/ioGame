@@ -8,8 +8,29 @@ class Game
   {
     this.sockets = [];
     this.players = [];
-    this.bead = new Bead(Math.floor(Math.random() * 690 + 10), Math.floor(Math.random() * 690 + 10));
+    this.beads = [];
     this.map = new Map();
+    this.spawnBead(1000, 1000);
+  }
+
+  spawnBead(x, y)
+  {
+    var bead = new Bead(x, y)
+    this.beads.push(bead);
+    for(var i in this.sockets)
+      this.sockets[i].emit("beadAdded", bead.serialize());
+  }
+
+  removeBead(bead)
+  {
+    for(var i in this.sockets)
+      this.sockets[i].emit("beadRemoved", bead.serialize());
+    for(var i in this.beads)
+      if(this.beads[i] == bead)
+      {
+        this.beads.splice(i, 1);
+        return;
+      }
   }
 
   addPlayer(socket)
@@ -92,13 +113,13 @@ class Game
       {
         //Update the players position
         this.players[i].tick(this.map.MAP_WIDTH, this.map.MAP_HEIGHT, this.map.walls);
-        //Check if the player is colliding with the bead
-        if(this.bead.checkPlayerBeadCollision(this.players[i].xPos, this.players[i].yPos, this.players[i].radius))
-        {
-          this.players[i].score++;
-          this.bead.xPos = Math.floor(Math.random() * 690 + 10);
-          this.bead.yPos = Math.floor(Math.random() * 690 + 10);
-        }
+        //Check if the player is colliding with a bead
+        for(var j in this.beads)
+          if(this.beads[j].checkPlayerBeadCollision(this.players[i].xPos, this.players[i].yPos, this.players[i].radius))
+          {
+            this.players[i].score++;
+            this.removeBead(this.beads[j]);
+          }
       }
     }
     //Remove dead players
